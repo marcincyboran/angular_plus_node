@@ -1,0 +1,19 @@
+mat-form-field,
+textarea {
+    width: 100%;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.imgPrev {
+    padding: 2rem;
+}
+
+.imgPrev img {
+    display: inline-block;
+    border-radius: .5rem;
+    border: 1px solid #eee;
+    max-width: 100%;
+}

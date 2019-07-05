@@ -1,0 +1,26 @@
+<mat-accordion multi="true" *ngIf="listOfPosts.length > 0; else noPosts">
+    <mat-expansion-panel [attr.data-id]="post.id" *ngFor="let post of listOfPosts">
+        <mat-expansion-panel-header>
+            {{ post.title }}
+        </mat-expansion-panel-header>
+        <div class="imgPrev">
+            <img [src]="post.filePath" [alt]="post.title">
+        </div>
+        <p>
+            {{ post.content }}
+        </p>
+        <mat-action-row>
+            <a mat-button color="primary" [routerLink]="['edit', post.id]">EDIT</a>
+            <button mat-button color="warn" (click)="onDelete(post.id)">DELETE</button>
+        </mat-action-row>
+    </mat-expansion-panel>
+</mat-accordion>
+<mat-paginator 
+    [length]="allItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChanged($event)">
+</mat-paginator>
+<ng-template #noPosts>
+    <p class="mat-body-2 u-text-center">No posts added yet.</p>
+</ng-template>

@@ -1,0 +1,36 @@
+<mat-card>
+    <form [formGroup]="form" (submit)="onSavePost()" >
+        <mat-form-field>
+            <input 
+            matInput
+            type="text"
+            placeholder="Post title"
+            formControlName="title"
+            >
+            <mat-error *ngIf="form.get('title').invalid">Please enter a title</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <textarea 
+            matInput
+            rows="6"
+            placeholder="Post content"
+            formControlName="content"
+            ></textarea>
+            <mat-error *ngIf="form.get('content').invalid">Please enter a description</mat-error>            
+        </mat-form-field>
+        <div class="toRight">
+            <button mat-stroked-button type="button" color="warn" (click)="filePicker.click()">{{ (mode === "create") ? 'Add Image' : 'Update Image' }}</button>
+            <input 
+                type="file"
+                #filePicker
+                (change)="onFileChange($event)">
+        </div>
+        <div class="imgPrev" *ngIf="imagePreview !== '' && imagePreview">
+            <img [src]="imagePreview" [alt]="getFileName()">
+        </div>
+        <button
+        mat-raised-button
+        color="primary" 
+        type="submit">{{ (mode === "create") ? 'Add' : 'Edit' }}</button>
+    </form>
+</mat-card>

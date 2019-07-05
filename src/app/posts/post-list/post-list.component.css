@@ -1,0 +1,20 @@
+:host {
+    display: block;
+    margin-top: 2rem;
+}
+
+.u-text-center {
+    text-align: center;
+}
+
+.imgPrev {
+    padding: 2rem;
+}
+
+.imgPrev img {
+    max-width: 100%;
+}
+
+mat-paginator {
+    margin-top: 2rem;
+}
