@@ -15,13 +15,13 @@ export class PostService {
 
     getPostById(id: string) {
         return this.httpClient
-                   .get<PostFromServer>(`http://localhost:3200/api/posts/${id}`);
+                   .get<PostFromServer>(`http://localhost:3000/api/posts/${id}`);
     }
 
     getPosts(page: number, pageSize: number): void {
         const query = `?ps=${pageSize}&p=${page}`;
         this.httpClient
-            .get<{message: string, data: any[]}>(`http://localhost:3200/api/posts${query}`)
+            .get<{message: string, data: any[]}>(`http://localhost:3000/api/posts${query}`)
             .pipe(map((response) => {
                 return response.data.map(post => {
                     return {
@@ -45,7 +45,7 @@ export class PostService {
         formData.append('uploadedFile', file, title);
 
         this.httpClient
-            .post('http://localhost:3200/api/posts', formData)
+            .post('http://localhost:3000/api/posts', formData)
             .subscribe((response: PostFromServer) => {
                 // triggered only when succes
                 const newPost: Post = { title, content, id: response._id, filePath: response.filePath };
@@ -66,7 +66,7 @@ export class PostService {
             updatedPost = { id, title, content, filePath: fileOrPath as string};
         }
         this.httpClient
-            .put(`http://localhost:3200/api/posts/${id}`, updatedPost)
+            .put(`http://localhost:3000/api/posts/${id}`, updatedPost)
             .subscribe((response: PostFromServer) => {
                 console.log(response);
                 const index = this.posts.findIndex((p) => p.id === id);
@@ -79,7 +79,7 @@ export class PostService {
 
     deletePost(postId: string): void {
         this.httpClient
-            .delete(`http://localhost:3200/api/posts/${postId}`)
+            .delete(`http://localhost:3000/api/posts/${postId}`)
             .subscribe((deletedPost) => {
                 console.log(deletedPost);
                 this.posts = this.posts.filter((post) => post.id !== postId);
