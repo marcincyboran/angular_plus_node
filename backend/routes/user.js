@@ -4,12 +4,18 @@ const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
-router.get('', (req, res) => {
-
-});
+router.get('/', async (req, res) => {
+  try {
+    const allUsers = await User.find();
+    res.status(200).send(allUsers);
+  } catch (ex) {
+    res.status(500).send('Something went wrong...');    
+  }
+})
 
 router.post('/signup', async (req, res) => {
-  const passHash = bcrypt.hash(req.body.password, 10);
+
+  const passHash = await bcrypt.hash(req.body.password, 10);
 
   const user = new User({
     email: req.body.email,
@@ -17,10 +23,11 @@ router.post('/signup', async (req, res) => {
   });
 
   try {
-    user = user.save();
-    res.status(201).send(user);
+    user = await user.save();
+    res.status(200).send(user);
   } catch (ex) {
-    res.status(500).send('Something went wrong', ex);
+    console.log(ex);
+    res.status(500).send('Something went wrong...');
   }
 });
 

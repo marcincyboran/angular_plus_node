@@ -7,7 +7,7 @@ const userRouter = require('../routes/user');
 module.exports = function(app) {
 
     app.use('/api/posts', postsRouter);
-    app.use('/api/user', userRouter);
+    app.use('/api/users', userRouter);
 
     app.use('/images', express.static(path.join('backend/uploads')));
 }
