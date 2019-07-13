@@ -1,14 +1,15 @@
 const express = require('express');
 const upload = require('multer');
 
-const router = express.Router();
 const Post = require('../models/post');
+const loginUsersOnly = require('../middleware/auth');
+
+const router = express.Router();
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png'
 }
-
 
 const storage = upload.diskStorage({
     destination: (req, file, cb) => {
@@ -51,11 +52,11 @@ router.get('/:id', async (req, res) => {
         const post = await Post.findById(req.params.id);
         res.status(200).json(post);
     } catch (ex) {
-        res.status(500).send('Something went wrong', ex);        
+        res.status(500).send('Something went wrong', ex);
     }
-})
+});
 
-router.post('/', upload({storage: storage}).single('uploadedFile'), async (req, res) => {
+router.post('/', loginUsersOnly, upload({storage: storage}).single('uploadedFile'), async (req, res) => {
     const url = `${req.protocol}://${req.get('host')}`;
     const post = new Post({
         title: req.body.title,
@@ -72,7 +73,7 @@ router.post('/', upload({storage: storage}).single('uploadedFile'), async (req, 
     }
 });
 
-router.put('/:id', upload({storage: storage}).single('uploadedFile'), async (req, res) => {
+router.put('/:id', loginUsersOnly, upload({storage: storage}).single('uploadedFile'), async (req, res) => {
     let filePath = req.body.filePath;
     if (req.file) {
         const url = `${req.protocol}://${req.get('host')}`;
@@ -95,11 +96,11 @@ router.put('/:id', upload({storage: storage}).single('uploadedFile'), async (req
             filePath: filePath
         });
     } catch (ex) {
-        res.status(500).send('Something went wrong', ex);        
+        res.status(500).send('Something went wrong', ex);
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', loginUsersOnly, async (req, res) => {
     try {
         const deletedPost = await Post.findByIdAndRemove(req.params.id);
         res.status(200).send(deletedPost);

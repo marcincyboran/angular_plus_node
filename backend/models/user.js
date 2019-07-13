@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   email: {
     type: String,
     required: true,
-    // unique: true
+    unique: true
   },
   password: {
     type: String,
@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
   }
 });
 
-// userSchema.plugin(uniqueValidator);
+userSchema.plugin(uniqueValidator);
 
 const User = mongoose.model('User', userSchema);
 

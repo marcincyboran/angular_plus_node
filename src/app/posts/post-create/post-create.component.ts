@@ -4,6 +4,7 @@ import { PostService } from '../post.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from '../post-interface';
 import { mimeType } from './mime-type.validator';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-post-create',
