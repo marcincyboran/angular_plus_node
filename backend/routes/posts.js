@@ -61,9 +61,9 @@ router.post('/', loginUsersOnly, upload({storage: storage}).single('uploadedFile
     const post = new Post({
         title: req.body.title,
         content: req.body.content,
-        filePath: `${url}/images/${req.file.filename}`
+        filePath: `${url}/images/${req.file.filename}`,
+        creator: req.customData.userId
     });
-
     try {
         const addedPost = await post.save();
         console.log(addedPost);
@@ -84,17 +84,23 @@ router.put('/:id', loginUsersOnly, upload({storage: storage}).single('uploadedFi
         _id: req.body.id,
         title: req.body.title,
         content: req.body.content,
-        filePath: filePath
+        filePath: filePath,
+        creator: req.customData.userId
     });
 
     try {
-        const updatedPost = await Post.updateOne({_id: req.params.id}, post);
-        res.status(200).json({
-            _id: req.body.id,
-            title: req.body.title,
-            content: req.body.content,
-            filePath: filePath
-        });
+        const updatedPost = await Post.updateOne({ _id: req.params.id, creator: req.customData.userId }, post);
+        if(updatedPost.nModified > 0) {
+          res.status(200).json({
+              _id: req.body.id,
+              title: req.body.title,
+              content: req.body.content,
+              filePath: filePath,
+              creator: req.customData.userId
+          });
+        } else {
+          res.status(401).send('You can not edit other users posts.!');
+        }
     } catch (ex) {
         res.status(500).send('Something went wrong', ex);
     }
@@ -103,7 +109,11 @@ router.put('/:id', loginUsersOnly, upload({storage: storage}).single('uploadedFi
 router.delete('/:id', loginUsersOnly, async (req, res) => {
     try {
         const deletedPost = await Post.findByIdAndRemove(req.params.id);
-        res.status(200).send(deletedPost);
+        if(deletedPost.n > 0) {
+          res.status(200).send(deletedPost);
+        } else {
+          res.status(401).send('You can not delete other users posts.!');
+        }
     } catch (ex) {
         res.status(500).send('Something went wrong', ex);
     }

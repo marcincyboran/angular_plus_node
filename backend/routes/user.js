@@ -27,12 +27,15 @@ router.post('/login', async (req, res) => {
     if(!isPassValid) return res.status(401).send('Wrong password');
 
     const token = jwt.sign(
-        {email: user.email, id: user._id},
+        {
+          email: user.email,
+          id: user._id
+        },
         'secret_key_string_change_it_to_env',
         { expiresIn: '1h'}
       )
 
-    res.status(200).send({message: 'Successful loged', token, expiresIn: 3600 });
+    res.status(200).send({message: 'Successful loged', token, expiresIn: 3600, userId: user._id });
 
   } catch (ex) {
     res.status(500).send({ message: 'Something went wrong...', info: ex});

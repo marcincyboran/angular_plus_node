@@ -11,6 +11,11 @@ const postSchema = mongoose.Schema({
     },
     filePath: {
         type: String
+    },
+    creator: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: 'User'
     }
 });
 

@@ -3,6 +3,7 @@ export interface Post {
     title: string;
     content: string;
     filePath: string;
+    creator: string;
 }
 
 export interface PostFromServer {
@@ -10,4 +11,5 @@ export interface PostFromServer {
     title: string;
     content: string;
     filePath: string;
+    creator: string;
 }
